@@ -9,40 +9,45 @@ import (
 const XmlLocation = "input/e1_inpatient.xml"
 const XslLocation = "input/CED.XSL"
 
-func TestGetHTML(t *testing.T) {
+func getXslXml(t *testing.T) ([]byte, []byte) {
 
-	b, err := ioutil.ReadFile(XmlLocation)
+	xml, err := ioutil.ReadFile(XmlLocation)
 	if err != nil {
 		t.Errorf("Error reading xml file", XmlLocation)
 	}
+
+	xsl, err := ioutil.ReadFile(XslLocation)
+	if err != nil {
+		t.Errorf("Error reading xml file", XmlLocation)
+	}
+	return xml, xsl
 	// for now TODO
-	html, err := GetHTML(b)
+}
+
+func TestGetHTML(t *testing.T) {
+
+	xml, xsl := getXslXml(t)
+	html, err := GetHTML(xml, xsl)
 	if err != nil {
 		t.Errorf("Error getting html")
 	}
-	t.Log(html)
+	t.Log(string(html))
 }
 
 func TestGetPDF(t *testing.T) {
 
-	b, err := ioutil.ReadFile(XmlLocation)
-	if err != nil {
-		t.Errorf("Error reading xml file")
-	}
-	pdf, err := GetPDF(b)
+	xml, xsl := getXslXml(t)
+	pdf, err := GetPDF(xml, xsl)
 	if err != nil {
 		t.Errorf("Error getting pdf")
 	}
-	t.Log(pdf)
+	t.Log("Received pdf bytes of length ", len(pdf))
 }
 
 func TestGetPNG(t *testing.T) {
 
-	b, err := ioutil.ReadFile(XmlLocation)
-	if err != nil {
-		t.Errorf("Error reading xml file")
-	}
-	png, err := GetPNG(b)
+	xml, xsl := getXslXml(t)
+	png, err := GetPNG(xml, xsl)
 	if err != nil {
 		t.Errorf("Error getting png")
 	}
