@@ -1,35 +1,45 @@
-// This is the header file for xmlrunner 
-// xml runner is the starting point
+#ifndef XMLTOX_H
+#define XMLTOX_H
 
-// xml file 
-// -> pdf
-// -> png
+#include<stdbool.h>
 
-typedef struct XMLRunner {
-    char *XMLFileName;
+/**
+ * Status acts as a placeholder for information flow.
+ */
+typedef struct Status {
     char *XMLData;
-}XMLRunner;
+    char *XSLData;
+    char *tmpFileName;
+    char *htmlFileName;
+    char *pdfFileName;
+    bool imageConverted;
+}Status;
 
 /*
  * This is the basic point of entry where in the xmlData is passed on to 
  * get the pdf data as the response.
  */
-char* GetPDFFile(char *, char *);
+bool GetPDFFile(Status *);
 
 /*
  * This is the basic point of entry where in the xmlData is passed on to 
  * get the pdf data as the response.
+ * @return - length of the png data.
  */
-char* GetPngData(char *);
+int GetPNGData(Status *, char **);
+
+Status* InitStatus(char *, char *, char *);
+bool FinishStatus(Status *);
 
 /*
- * When XML is passed, we get the Html out 
- * making use of the libxslt implementation.
+ * Create HTML based on the contents of the status object passed.
  */
-char *GetHTML(char *, char *);
+bool GetHTML(Status *);
 
 /*
  * Pdf data is generated when the html is passed to it.
  * Use the web kit qt bindings for getting this done.
  */
 char* GetPDFFromHTML(char *htmlData);
+
+#endif /* Header file ends */
