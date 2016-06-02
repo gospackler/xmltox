@@ -7,12 +7,9 @@ import "C"
 import (
 	"errors"
 	"io/ioutil"
-
-	"unsafe"
-
-	"fmt"
-
-//	"os"
+	//	"fmt"
+	//	"unsafe"
+	//	"os"
 )
 
 func GetHTML(xmlContent []byte, xslContent []byte) (html []byte, err error) {
@@ -68,25 +65,23 @@ func GetPNG(xmlContent []byte, xslContent []byte) (png []byte, err error) {
 	cxml := C.CString(string(xmlContent))
 	cxsl := C.CString(string(xslContent))
 
-	status := C.InitStatus(C.CString("uidfilename"), cxml, cxsl)
+	uidFileName := "uidfilename"
+	status := C.InitStatus(C.CString(uidFileName), cxml, cxsl)
 	success := C.GetHTML(status)
 	if !success {
 		return nil, errors.New("Error generating html")
 	}
-	len := C.GenPNG(status)
-	cData := C.GetPNG(status)
 
-	png = C.GoBytes(unsafe.Pointer(cData), len)
+	fileName := uidFileName + ".html"
+	cData := C.CString("")
+	//	len := C.GenPNG(status)
+	//	cData := C.GetPNG(status)
 
-	zeros := 0
-	for i := 0; i < int(len); i++ {
-		if png[i] == 0 {
-			zeros = zeros + 1
-		}
-	}
+	C.WkpngCreate(C.CString(fileName), &cData)
+	//len := C.WkpngCreate(C.CString(fileName), &cData)
+	//	png = C.GoBytes(unsafe.Pointer(cData), len)
 
-	fmt.Println("zero count = ", zeros)
-	// No need to check for retyrn as it never realy returns false.
+	//	fmt.Println("Am I being seen?")
 	//	C.FinishStatus(status)
 
 	return

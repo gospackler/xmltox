@@ -29,6 +29,8 @@ bool GetPDFFile(Status *);
  */
 int GetPNGData(Status *, char **);
 
+// FileName of html file. cString buffer for holding png
+int WkpngCreate(char*, char**);
 // Splitting into two functions for easy use in go.
 // Generates PNG and returns the length of PNG created. 
 int GenPNG(Status *);
