@@ -13,6 +13,7 @@ typedef struct Status {
     char *htmlFileName;
     char *pdfFileName;
     bool imageConverted;
+    char *pngData;
 }Status;
 
 /*
@@ -28,7 +29,17 @@ bool GetPDFFile(Status *);
  */
 int GetPNGData(Status *, char **);
 
+// Splitting into two functions for easy use in go.
+// Generates PNG and returns the length of PNG created. 
+int GenPNG(Status *);
+
+// Returns the pointer to the first PNG instance.
+char* GetPNG(Status *);
+
 Status* InitStatus(char *, char *, char *);
+
+// C programs use this. de alllocate yourself the allocated one or FIXME later.
+Status* InitStatusFromFile(char *, char *, char *);
 bool FinishStatus(Status *);
 
 /*

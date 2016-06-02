@@ -42,6 +42,10 @@ func TestGetPDF(t *testing.T) {
 		t.Errorf("Error getting pdf")
 	}
 	t.Log("Received pdf bytes of length ", len(pdf))
+	err = ioutil.WriteFile("testdatapdf.pdf", pdf, 0644)
+	if err != nil {
+		t.Errorf("Error writing pdf")
+	}
 }
 
 func TestGetPNG(t *testing.T) {
@@ -51,5 +55,9 @@ func TestGetPNG(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error getting png")
 	}
-	t.Log(png)
+	t.Log("Received png bytes of length ", len(png))
+	err = ioutil.WriteFile("testdatapng.png", png, 0644)
+	if err != nil {
+		t.Errorf("Error writing png")
+	}
 }

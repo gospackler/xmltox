@@ -48,9 +48,29 @@ int wkpngCreate(char *htmlFile, char **pngData) {
 int GetPNGData(Status *status, char **buffer) {
 
 	// At the end of the function. 
+	printf("\n\n Address before allocation %p \n", *buffer);
 	int len = wkpngCreate(status->htmlFileName, buffer);
+
+	printf("\n\n Address after allocation %p \n", *buffer);
 	if(len > 0) {
 		status->imageConverted = true;
 	}
 	return len;
+}
+
+// Geerates the png and returns the length of the png generated.
+int GenPNG(Status *status) {
+
+	int len = wkpngCreate(status->htmlFileName, &status->pngData);
+
+	printf("\n\n Address after allocation %p \n", status->pngData);
+	if(len > 0) {
+		status->imageConverted = true;
+	}
+	return len;
+}
+
+// Returns the pointer to the starting address of the generated PNG.
+char* GetPNG(Status *status) {
+	return status->pngData;
 }

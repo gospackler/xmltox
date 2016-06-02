@@ -26,10 +26,10 @@ char* getFileInBuffer(char *fileName) {
 	return buffer;
 }
 
-Status* InitStatus(char *uid, char *xml, char *xsl) {
+Status* InitStatus(char *uid, char *xmlData, char *xslData) {
 	Status *status = (Status*) malloc(sizeof(Status));
-	status->XMLData = getFileInBuffer(xml);
-	status->XSLData = getFileInBuffer(xsl);
+	status->XMLData = xmlData;
+	status->XSLData = xslData;
 	status->tmpFileName = uid;
 	int len = strlen(uid);
 	// 6 is .html + \0
@@ -43,15 +43,18 @@ Status* InitStatus(char *uid, char *xml, char *xsl) {
 	status->pdfFileName = strcpy(status->pdfFileName, status->tmpFileName);
 	status->pdfFileName = strcat(status->pdfFileName, ".pdf");
 	status->imageConverted = false; 
+	status->pngData = NULL;
 	return status;
 }
 
+Status* InitStatusFromFile(char *uid, char *xml, char *xsl) {
+	char *xmlData = getFileInBuffer(xml);
+	char *xslData = getFileInBuffer(xsl);
+	return InitStatus(uid, xmlData, xslData);
+}
 
 bool FinishStatus(Status *status) {
-
-	free(status->XMLData);
-	free(status->XSLData);
-
+	// Xml and XSL data comes from the go side so no need to de allocate
 	if(status->imageConverted) {
 		wkhtmltoimage_deinit();
 	}
