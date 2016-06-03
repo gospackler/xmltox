@@ -37,7 +37,7 @@ func TestGetHTML(t *testing.T) {
 func TestGetPDF(t *testing.T) {
 
 	xml, xsl := getXslXml(t)
-	pdf, err := GetPDF(xml, xsl)
+	pdf, err := GetPDF(xml, xsl, "uid")
 	if err != nil {
 		t.Errorf("Error getting pdf")
 	}

@@ -29,16 +29,15 @@ func GetHTML(xmlContent []byte, xslContent []byte) (html []byte, err error) {
 	if err != nil {
 		return nil, errors.New("Error reading created html" + err.Error())
 	}
-	C.FinishStatus(status)
+	defer C.FinishStatus(status)
 	return
 }
 
-func GetPDF(xmlContent []byte, xslContent []byte) (pdf []byte, err error) {
+func GetPDF(xmlContent []byte, xslContent []byte, uidFileName string) (pdf []byte, err error) {
 
 	cxml := C.CString(string(xmlContent))
 	cxsl := C.CString(string(xslContent))
 
-	uidFileName := "uidfilename"
 	status := C.InitStatus(C.CString(uidFileName), cxml, cxsl)
 	success := C.GetHTML(status)
 	if !success {
@@ -56,7 +55,7 @@ func GetPDF(xmlContent []byte, xslContent []byte) (pdf []byte, err error) {
 		return nil, errors.New("Error reading created pdf" + err.Error())
 	}
 
-	C.FinishStatus(status)
+	defer C.FinishStatus(status)
 	return
 }
 
