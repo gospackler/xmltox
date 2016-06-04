@@ -1,0 +1,95 @@
+a:link
+{
+    color: blue;
+}
+
+a:active
+{
+    color: blue;
+}
+
+a:visited
+{
+    color: blue;
+}
+
+body
+{
+    background-color: #EAEAEA;
+    background-image: url(PG_BACK.PNG);
+    background-repeat: repeat-x;
+    background-position:left top;
+}
+
+.documentBody
+{
+    background-color:#FFFFFF;
+    border-bottom-left-radius:1em;
+    border-bottom-right-radius:1em;
+    padding-bottom:5px;
+}
+
+.customerBanner
+{
+    color: #333333;
+}
+
+.patientBanner
+{
+    background-color:#333333;
+    background-image: url(PB_GLOW.PNG);
+    background-repeat: repeat-x;
+    background-position:left bottom;
+    color: #CCCCCC;
+}
+
+/* Rounded borders */
+.MT-BodyCorner_TL
+{
+    float: left;
+    position: relative;
+    margin-bottom: -32px;
+    background: url(MT-TL.PNG) no-repeat left top;
+    margin-right: -18px;
+    margin-left: -10px;
+    margin-top: -10px;
+    width: 18px;
+    height: 32px;
+}
+
+.MT-BodyCorner_TR
+{
+    float: right;
+    position: relative;
+    background-image:url(MT-TR.PNG);
+    background-position:right top;
+    background-repeat:no-repeat;
+    margin-bottom: -32px;
+    margin-top: -10px;
+    margin-right: -10px;
+    width: 18px;
+    height: 32px;    
+}
+
+.patientBanner .primaryRegion .patientLastName,
+.patientBanner .primaryRegion .patientFirstName,
+.patientBanner .primaryRegion .patientSuffix,
+.patientBanner .primaryRegion .patientPrefix,
+.patientBanner .primaryRegion .patientName
+{
+    color:#FFFFFF;
+}
+
+.patientBanner .break
+{
+    border-top-color:#CCCCCC;
+}
+.patientBanner td.break
+{
+    border-bottom-color:#CCCCCC;
+}
+.summaryBanner
+{
+    background-color: #76B300;
+    border-bottom: 1px solid #888888;
+}

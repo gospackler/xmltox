@@ -12,6 +12,10 @@ import (
 	//	"os"
 )
 
+func init() {
+
+}
+
 func GetHTML(xmlContent []byte, xslContent []byte) (html []byte, err error) {
 
 	cxml := C.CString(string(xmlContent))
@@ -55,33 +59,35 @@ func GetPDF(xmlContent []byte, xslContent []byte, uidFileName string) (pdf []byt
 		return nil, errors.New("Error reading created pdf" + err.Error())
 	}
 
-	defer C.FinishStatus(status)
+	//	defer C.FinishStatus(status)
 	return
 }
 
 func GetPNG(xmlContent []byte, xslContent []byte) (png []byte, err error) {
 
-	cxml := C.CString(string(xmlContent))
-	cxsl := C.CString(string(xslContent))
+	/*
+		cxml := C.CString(string(xmlContent))
+		cxsl := C.CString(string(xslContent))
 
-	uidFileName := "uidfilename"
-	status := C.InitStatus(C.CString(uidFileName), cxml, cxsl)
-	success := C.GetHTML(status)
-	if !success {
-		return nil, errors.New("Error generating html")
-	}
+		uidFileName := "uidfilename"
+		status := C.InitStatus(C.CString(uidFileName), cxml, cxsl)
+		success := C.GetHTML(status)
+		if !success {
+			return nil, errors.New("Error generating html")
+		}
 
-	fileName := uidFileName + ".html"
-	cData := C.CString("")
-	//	len := C.GenPNG(status)
-	//	cData := C.GetPNG(status)
+		fileName := uidFileName + ".html"
+		cData := C.CString("")
+		//	len := C.GenPNG(status)
+		//	cData := C.GetPNG(status)
 
-	C.WkpngCreate(C.CString(fileName), &cData)
-	//len := C.WkpngCreate(C.CString(fileName), &cData)
-	//	png = C.GoBytes(unsafe.Pointer(cData), len)
+		C.WkpngCreate(C.CString(fileName), &cData)
+		//len := C.WkpngCreate(C.CString(fileName), &cData)
+		//	png = C.GoBytes(unsafe.Pointer(cData), len)
 
-	//	fmt.Println("Am I being seen?")
-	//	C.FinishStatus(status)
+		//	fmt.Println("Am I being seen?")
+		//	C.FinishStatus(status)
 
+	*/
 	return
 }

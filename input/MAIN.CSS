@@ -1,0 +1,863 @@
+/* Begin CSS Reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	position:static;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, img, menu, nav, section
+{
+	display: block;
+}
+
+body
+{
+	line-height: 1;
+}
+
+ol, ul 
+{
+	list-style-type: circle;
+    list-style-position:inside;
+}
+
+blockquote, q 
+{
+	quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after
+{
+	content: '';
+	content: none;
+}
+
+table
+{
+	border-collapse: collapse;
+	border-spacing:0px;
+	border-width:0px;
+}
+
+/* End CSS Reset */
+
+/* Begin support for standard "styleCodes' that are recognized by the default CDA stylesheet */
+span.Bold,
+div.Bold
+{
+    font-weight:bold;
+}
+
+span.Italics,
+div.Italics
+{
+    font-style:italic;
+}
+
+span.Underline,
+div.Underline
+{
+    text-decoration:underline;
+}
+/* End support for standard "styleCodes' that are recognized by the default CDA stylesheet */
+
+/* being generic support for x* styleCode values */
+.xlabel
+{
+    padding-right: 5px;
+    color:#999999;
+}
+
+/* end generic support for x* styleCode values */
+
+
+/* NOTE: Also styled one or more of alternate stylesheet files */
+body 
+{
+    font: 10px Arial, Helvetica, sans-serif;
+    margin: 1px;
+    padding: 1px;
+}
+
+.theDocument { 
+   width: expression( document.body.clientWidth > 940 ? "940px" : "auto" ); /* sets max-width for IE 6*/
+}
+
+.theDocument
+{
+    max-width: 940px;
+    min-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.theDocument div.column
+{
+    vertical-align:top;
+    display:inline-block;
+    /* The two properties below are required to get IE6 and IE7 to honor the display:inline-block*/
+    zoom:1;
+    *display:inline;
+    /******/
+}
+
+/* NOTE: Also styled one or more of alternate stylesheet files */
+.customerBanner
+{
+    padding: 10px;
+}
+
+.customerBanner .customerInfo
+{
+    text-align: right;
+    font-weight: bold;
+}
+
+.customerBanner .providerOrganizationName
+{
+    font-family: Georgia, Utopia, Serif;
+    font-size: 1.6em;
+    min-height:1.0em;
+}
+
+.customerBanner .providerCityState
+{
+    font-size: 1.3em;
+    min-height: 1.0em;
+}
+
+/* NOTE: Also styled one or more of alternate stylesheet files */
+.patientBanner
+{
+    padding: 10px;
+}
+
+.patientBanner ul
+{
+    list-style-type: none;
+}
+
+.patientBanner .label
+{
+    font-size:1.0em;
+}
+
+.patientBanner .value
+{
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+.patientBanner .primaryRegion .patientLastName
+{
+    text-transform:uppercase;
+}
+
+
+/* NOTE: Also styled one or more of alternate stylesheet files */
+.patientBanner .primaryRegion .patientLastName,
+.patientBanner .primaryRegion .patientName
+{
+    font-weight: bold;
+    font-size: 2.4em;
+}
+
+/* NOTE: Also styled one or more of alternate stylesheet files */
+.patientBanner .primaryRegion .patientFirstName
+{
+    font-size: 2.4em;
+}
+
+/* NOTE: Also styled one or more of alternate stylesheet files */
+.patientBanner .primaryRegion .patientSuffix
+{
+    font-size: 1.8em;
+}
+
+/* NOTE: Also styled one or more of alternate stylesheet files */
+.patientBanner .primaryRegion .patientPrefix
+{
+    font-size: 1.8em;
+}
+
+.patientBanner .mrn .label
+{
+    font-size: 1.0em;
+}
+
+.patientBanner .mrn .value
+{
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.patientBanner .primaryRegion .details
+{
+    margin:6px 0px 7px 0px;
+}
+
+.patientBanner .primaryRegion .preferredName .dataBlock
+{
+    padding-right: 45px;
+}
+
+.patientBanner .primaryRegion .birthDate .dataBlock
+{
+    padding-right: 65px;
+}
+
+.patientBanner .primaryRegion .gender .dataBlock
+{
+    padding-right: 65px;
+}
+
+.patientBanner .primaryRegion div.mrn
+{
+    text-align: right;
+    float:right;
+}
+
+.patientBanner div.break
+{
+    margin: 7px 0px 7px 0px;
+    border-top-style:solid;
+    border-top-width:1px;
+    clear:right;
+}
+
+.patientBanner tr
+{
+    margin-top: 6px;
+}
+.patientBanner td.break
+{
+    margin: 7px 0px 10px 0px;
+    border-bottom-style:solid;
+    border-bottom-width:1px;
+    height:7px;
+    vertical-align:middle;
+    clear:right;    
+}
+
+.patientBanner td
+{
+    vertical-align:top;
+}
+
+.patientBanner .secondaryRegion
+{
+}
+
+.patientBanner .secondaryRegion .value
+{
+    font-size:1.3em;
+    font-weight:normal;
+}
+
+.patientBanner .secondaryRegion .address .dataBlock
+{
+    padding-right: 25px;
+}
+
+.patientBanner .secondaryRegion .telecoms .dataBlock
+{
+    padding-right: 25px;
+}
+
+.patientBanner .secondaryRegion .demographics .dataBlock
+{
+    padding-right: 25px;
+}
+
+.patientBanner .secondaryRegion .dataBlock
+{
+    margin-bottom: 5px;
+}
+
+/*     Patient Banner Tertiary Region */
+.patientBanner .tertiaryRegion
+{
+}
+
+.patientBanner .tertiaryRegion .value
+{
+    font-size:1.3em;
+    font-weight:normal;
+}
+
+.patientBanner .tertiaryRegion .address .dataBlock
+{
+    padding-right: 25px;
+}
+
+.patientBanner .tertiaryRegion .telecoms .dataBlock
+{
+    padding-right: 25px;
+}
+
+.patientBanner .tertiaryRegion .dataBlock
+{
+    margin-bottom: 5px;
+}
+
+.patientBanner .tertiaryRegion .name .dataBlock .contactFirstName,
+.patientBanner .tertiaryRegion .name .dataBlock .contactLastName,
+.patientBanner .tertiaryRegion .name .dataBlock .contactPrefixName,
+.patientBanner .tertiaryRegion .name .dataBlock .contactSuffixName
+{
+    font-size:1.3em;
+    font-weight:normal;    
+}
+
+.xproviderName
+{
+   color:#999999;
+}
+
+.xproviderLastName
+{
+   text-transform:uppercase;
+}
+
+/* NOTE: Also styled one or more of alternate stylesheet files */
+.summaryBanner
+{
+    padding: 10px;
+    color: #FFFFFF;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* NOTE: Also styled one or more of alternate stylesheet files */
+.documentBody
+{
+}
+
+.sectionHeader
+{
+    padding: 5px 10px 0px 10px;
+    margin-bottom: 5px;
+    font-size:1.3em;
+    color:#5B8F22;
+    border-bottom: 1px solid #5B8F22;
+}
+
+.sectionBody
+{
+    padding: 0px 20px 0px 20px;
+    margin: 12px 0px 12px 0px;
+    font-size:1.2em;
+}
+
+.sectionText
+{
+    font-family: Tahoma;
+	color: #000000;
+}
+
+.section ul,
+.section ol
+{
+    list-style-type:none;
+    display:inline-block;
+}
+
+.section li
+{
+    border-bottom: 1px solid #000000;
+    padding: 3px 0px 3px 0px;
+}
+
+.section thead
+{
+	display:none;
+}
+
+.sectionText table.xtableWithinTable, 
+.sectionText tbody.xtableWithinTable
+{
+    border-style: none;
+    border-bottom: none;
+    border-top: 0;
+    border-left: 0;
+}
+
+
+.sectionText tr.xalert
+{
+    background-color:#FDE7EC;
+}
+ 
+.sectionText tr.xalert td.xmain
+{
+   background-image: url(../Images/URGENCY.GIF);
+   background-repeat:no-repeat;
+   background-position:left 8px;
+}
+
+.sectionText tr.xalert td.xmain span.xreaction
+{
+    margin-left:10px;
+}
+
+.sectionText td
+{
+    vertical-align: top;
+	padding:5px;
+}
+
+.sectionText td.xmain
+{
+    min-width: 200px;
+    max-width: 500px;
+}
+
+.sectionText td.xmain,
+.sectionText td.xdates
+{
+    border-bottom: 1px solid #000000;
+}
+
+.sectionText td.xdates
+{
+    white-space:nowrap;
+}
+
+.sectionText td.xdetails,
+.sectionText td span.secondary
+{
+    color:#999999;
+}
+
+.sectionText td.xmain .xsecondary
+{
+    color:#999999;
+}
+
+.sectionText span.xcode
+{
+    display:none;
+}
+
+span.xcommentlabel
+{
+    padding-right: 5px;
+    color:#999999;
+    font-style:italic;
+}
+
+.sectionText td.xdates .xlabel
+{
+    padding-right: 5px;
+    color:#999999;
+}
+
+.sectionText td.xdates .xproviderName
+{
+   color:#999999;
+}
+
+.sectionText td.xdates .xproviderLastName
+{
+   text-transform:uppercase;
+}
+
+
+.sectionText td.xmain .xlabel
+{
+    padding-right: 5px;
+    color:#999999;
+}
+
+/* The Date Time values have a class of Bold */
+.sectionText td.dates .Bold
+{
+    text-align:right;
+}
+
+.sectionText td.xdetails
+{
+    border-bottom: 1px solid #999999;
+}
+
+.sectionText tr.last td
+{
+    border-bottom: 1px solid #000000;
+}
+
+.sectionText tbody.last tr.last td
+{
+    border-bottom: none;
+}
+
+.sectionText .xdetails .xreaction
+{
+    font-weight:bold;
+    color: #000000;
+}
+
+.medicationsSection .xdetails .xreaction
+{
+    color:#FF0000;
+}
+
+.medicationsSection .xdetails .xreaction .xlabel
+{
+    color:#FF0000;
+}
+
+.hamedicationsSection .xdetails .xreaction
+{
+    color:#FF0000;
+}
+
+.hamedicationsSection .xdetails .xreaction .xlabel
+{
+    color:#FF0000;
+}
+
+.hdmedicationsSection .xdetails .xreaction
+{
+    color:#FF0000;
+}
+
+.hdmedicationsSection .xdetails .xreaction .xlabel
+{
+    color:#FF0000;
+}
+
+.medicationsAdministeredSection .xdetails .xreaction
+{
+    color:#FF0000;
+}
+
+.medicationsAdministeredSection .xdetails .xreaction .xlabel
+{
+    color:#FF0000;
+}
+
+.immunizationsSection .xdetails .xreaction
+{
+    font-weight:bold;
+    color:#FF0000;
+}
+
+.immunizationsSection .xdetails .xreaction .xlabel
+{
+    font-weight:bold;
+    color:#FF0000;
+}
+
+.allergiesSection .xdetails .xreaction
+{
+    color:#FF0000;
+}
+
+.allergiesSection .xdetails .xreaction .xlabel
+{
+    color:#FF0000;
+}
+
+.allergiesSection .xmain .xreaction
+{
+    color:#FF0000;
+}
+
+.allergiesSection .xmain .xreaction .xlabel
+{
+    color:#FF0000;
+}
+
+.problemsSection span.xresolvedDate
+{
+    display:none;
+}
+
+.problemsSection .sectionText span.xcode
+{
+    color:#5B8F22;
+    display:inline;
+}
+
+.socialProblemsSection .sectionText span.xcode
+{
+    color:#5B8F22;
+    display:inline;
+}
+
+.familyProblemsSection .sectionText span.xcode
+{
+    color:#5B8F22;
+    display:inline;
+}
+
+.activeProblemsSection .sectionText span.xcode
+{
+    color:#5B8F22;
+    display:inline;
+}
+
+.activeProblemsSection span.xresolvedDate
+{
+    display:inline;
+}
+
+.socialProblemsSection span.xresolvedDate
+{
+    display:inline;
+}
+
+.hospitalDischargeProblemsSection .sectionText span.xcode
+{
+    color:#5B8F22;
+    display:inline;
+}
+
+.hospitalDischargeProblemsSection span.xresolvedDate
+{
+    display:inline;
+}
+
+.hospitalAdmissionProblemsSection .sectionText span.xcode
+{
+    color:#5B8F22;
+    display:inline;
+}
+
+.hospitalAdmissionProblemsSection span.xresolvedDate
+{
+    display:inline;
+}
+
+.resultsSection tbody.xprocedure .xdateTime,
+.resultsSection tbody.xprocedure .xprocedureText,
+.resultsSection tbody.xprocedure .xresults,
+.resultsSection tbody.xprocedure .xspacer,
+.resultsSection tbody.xprocedure .xdetails
+{
+    border-bottom: 1px solid #000000;
+}
+
+.resultsSection tbody.xorganizer .xorderName,
+.resultsSection tbody.xorganizer .xresultName,
+.resultsSection tbody.xorganizer .xresults
+{
+    border-bottom: 1px solid #000000;
+}
+
+.resultsSection .xdateTime,
+.vitalsSection .xdateTime,
+.vitalsSection td.xorganizerComments
+{
+    color:#999999;
+}
+
+.resultsSection td.xprocedureText
+{
+    max-width:100px;
+}
+
+.resultsSection .xresults
+{
+    max-width:100px;
+}
+
+.vitalsSection td.xdateTime,
+.vitalsSection td.xorganizerComments,
+.vitalsSection td.xtest,
+.vitalsSection td.xresults,
+.vitalsSection tbody.last tr.last td.xtest,
+.vitalsSection tbody.last tr.last td.xresults
+{
+    border-bottom: 1px solid #000000;
+}
+
+.vitalsSection td.xdateTime,
+.vitalsSection td.xresults,
+.vitalsSection tbody.last tr.last td.xresults
+{
+    text-align: right;
+}
+
+.vitalsSection tbody.last .xdateTime
+{
+    border-bottom: none;
+}
+
+.providersSection tbody
+{
+    border-bottom: 1px solid #000000;
+}
+
+.providersSection .contactType
+{
+    font-weight:bold;
+}
+
+.providersSection .contactName span
+{
+    padding-right: 45px;
+}
+
+.providersSection .contactAddr .dataBlock
+{
+    color:#999999;
+    padding-right: 45px;
+}
+
+.providersSection .contactTelPhone .dataBlock
+{
+    color:#999999;
+    padding-right: 45px;
+}
+
+.providersSection .contactTelOther
+{
+    color:#999999;
+}
+
+.providersSection .dataBlock .value
+{
+}
+
+.providersSection .dataBlock .label
+{
+    font-size:0.8em;
+    font-style:normal;
+}
+
+.careTeamSection secondaryRegion
+{
+	margin: 10;
+}
+
+.careTeamSection .contactType
+{
+    font-weight:bold;
+    padding-left: 2em;
+}
+
+.careTeamSection td.contactName,
+.careTeamSection td.contactAddr,
+.careTeamSection td.contactTelPhone,
+.careTeamSection td.contactTelOther 
+{
+    font-size:1.3em;
+}
+
+.careTeamSection td.contactType 
+{
+    font-size:1.3em;
+    border-top: 1px solid #CCCCCC;
+}
+
+.careTeamSection .contactName span
+{
+    padding-right: 45px;
+    padding-left: 2em;
+}
+
+.careTeamSection .contactAddr .dataBlock
+{
+    color:#999999;
+    padding-right: 45px;
+}
+
+.careTeamSection .contactTelPhone .dataBlock
+{
+    color:#999999;
+    padding-right: 45px;
+}
+
+.careTeamSection .contactTelOther
+{
+    color:#999999;
+}
+
+.careTeamSection .dataBlock .value
+{
+}
+
+.careTeamSection .dataBlock .label
+{
+    font-size:0.8em;
+    font-style:normal;
+}
+.documentFooter .sectionBody
+{
+    color:#999999;
+}
+
+.documentFooter .organizationName
+{
+    font-weight:bold;
+    color:#000000;
+}
+
+.documentFooter .label
+{
+    font-size:0.8em;
+    font-style:normal;
+}
+
+.documentFooter .address .dataBlock,
+.documentFooter .phone .dataBlock
+{
+    padding-right:45px;
+}
+
+.documentFooter .details
+{
+    border-bottom: none;
+}
+
+table.ptBannerTable, table.poweredBy
+{
+    width:100%;
+}
+table.careTeamTable
+{
+	width:100%;
+}
+
+td.poweredBy
+{
+    font-weight:bold;
+    font-size:1.3em;
+    color:#999999;
+    min-width:200px;
+    max-width:500px;
+    padding: 5px 10px 0px 10px;
+}
+td.styleVersion
+{
+    color:#999999;
+    font-size:1.3em;
+    text-align:right;
+    padding-right:10px;
+}
+
+span.poweredBy
+{
+    color:#5B8F22;
+}

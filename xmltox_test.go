@@ -46,6 +46,17 @@ func TestGetPDF(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error writing pdf")
 	}
+
+	xml, xsl = getXslXml(t)
+	pdf, err = GetPDF(xml, xsl, "uid1")
+	if err != nil {
+		t.Errorf("Error getting pdf")
+	}
+	t.Log("Received pdf bytes of length ", len(pdf))
+	err = ioutil.WriteFile("testdatapdf1.pdf", pdf, 0644)
+	if err != nil {
+		t.Errorf("Error writing pdf")
+	}
 }
 
 func TestGetPNG(t *testing.T) {

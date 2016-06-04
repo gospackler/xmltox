@@ -50,9 +50,9 @@
   -->
 
   <xsl:template match="n1:ClinicalDocument" mode="stylesheetLinks" priority="9">
-    <link rel="stylesheet" media="all" href="http://ihe.acdm.allscriptscloud.com/CED/2.2/CSS/MAIN.CSS"/>
-    <link rel="stylesheet" media="screen" href="http://ihe.acdm.allscriptscloud.com/CED/2.2/CSS/SCREEN.CSS"/>
-    <link rel="stylesheet" media="print" href="http://ihe.acdm.allscriptscloud.com/CED/2.2/CSS/PRINT.CSS"/>
+    <link rel="stylesheet" media="all" href="input/MAIN.CSS"/>
+    <link rel="stylesheet" media="screen" href="input/SCREEN.CSS"/>
+    <link rel="stylesheet" media="print" href="input/PRINT.CSS"/>
   </xsl:template>
 
   <xsl:template match="n1:title" mode="title" priority="9">

@@ -1,0 +1,36 @@
+body
+{
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.patientBanner
+{
+    border: 1px solid #000000;
+}
+
+.patientBanner .break
+{
+    border-top-color:#000000;
+}
+
+.summaryBanner
+{
+    background-color: #000000;
+    border: 1px solid #000000;
+}
+
+.documentBody
+{
+}
+
+.section
+{
+    border: 1px solid #000000;
+}
+
+.sectionHeader
+{
+    page-break-after:avoid;
+}
+
