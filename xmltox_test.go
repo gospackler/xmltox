@@ -24,16 +24,6 @@ func getXslXml(t *testing.T) ([]byte, []byte) {
 	// for now TODO
 }
 
-func TestGetHTML(t *testing.T) {
-
-	xml, xsl := getXslXml(t)
-	html, err := GetHTML(xml, xsl)
-	if err != nil {
-		t.Errorf("Error getting html")
-	}
-	t.Log(string(html))
-}
-
 func TestGetPDF(t *testing.T) {
 
 	xml, xsl := getXslXml(t)
@@ -62,7 +52,7 @@ func TestGetPDF(t *testing.T) {
 func TestGetPNG(t *testing.T) {
 
 	xml, xsl := getXslXml(t)
-	png, err := GetPNG(xml, xsl)
+	png, err := GetPNG(xml, xsl, "testpnguid")
 	if err != nil {
 		t.Errorf("Error getting png")
 	}

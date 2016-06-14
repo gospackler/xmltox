@@ -7,34 +7,10 @@ import "C"
 import (
 	"errors"
 	"io/ioutil"
-	//	"fmt"
-	//	"unsafe"
-	//	"os"
 )
 
 func init() {
-
-}
-
-func GetHTML(xmlContent []byte, xslContent []byte) (html []byte, err error) {
-
-	cxml := C.CString(string(xmlContent))
-	cxsl := C.CString(string(xslContent))
-
-	uidFileName := "uidfilename"
-	status := C.InitStatus(C.CString(uidFileName), cxml, cxsl)
-	success := C.GetHTML(status)
-	if !success {
-		return nil, errors.New("Error generating html")
-	}
-
-	fileName := uidFileName + ".html"
-	html, err = ioutil.ReadFile(fileName)
-	if err != nil {
-		return nil, errors.New("Error reading created html" + err.Error())
-	}
-	defer C.FinishStatus(status)
-	return
+	C.wkpdfInit()
 }
 
 func GetPDF(xmlContent []byte, xslContent []byte, uidFileName string) (pdf []byte, err error) {
@@ -59,35 +35,32 @@ func GetPDF(xmlContent []byte, xslContent []byte, uidFileName string) (pdf []byt
 		return nil, errors.New("Error reading created pdf" + err.Error())
 	}
 
-	//	defer C.FinishStatus(status)
+	defer C.FinishStatus(status)
 	return
 }
 
-func GetPNG(xmlContent []byte, xslContent []byte) (png []byte, err error) {
+func GetPNG(xmlContent []byte, xslContent []byte, uidFileName string) (png []byte, err error) {
 
-	/*
-		cxml := C.CString(string(xmlContent))
-		cxsl := C.CString(string(xslContent))
+	// Add a prefix path to the uidFileName
+	xmlFileName := uidFileName + ".xml"
+	err = ioutil.WriteFile(xmlFileName, xmlContent, 0644)
+	if err != nil {
+		return nil, err
+	}
 
-		uidFileName := "uidfilename"
-		status := C.InitStatus(C.CString(uidFileName), cxml, cxsl)
-		success := C.GetHTML(status)
-		if !success {
-			return nil, errors.New("Error generating html")
-		}
+	xslFileName := uidFileName + ".xsl"
+	err = ioutil.WriteFile(xslFileName, xslContent, 0644)
+	if err != nil {
+		return nil, err
+	}
 
-		fileName := uidFileName + ".html"
-		cData := C.CString("")
-		//	len := C.GenPNG(status)
-		//	cData := C.GetPNG(status)
-
-		C.WkpngCreate(C.CString(fileName), &cData)
-		//len := C.WkpngCreate(C.CString(fileName), &cData)
-		//	png = C.GoBytes(unsafe.Pointer(cData), len)
-
-		//	fmt.Println("Am I being seen?")
-		//	C.FinishStatus(status)
-
-	*/
+	selDriver, err := initSelDriver("input/e1_inpatient.xml", "input/CED.XSL")
+	if err != nil {
+		return nil, err
+	}
+	png, err = selDriver.TakeScreenshot()
+	if err != nil {
+		return nil, errors.New(err.Error())
+	}
 	return
 }

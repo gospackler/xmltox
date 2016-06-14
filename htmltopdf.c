@@ -15,13 +15,9 @@ void warning_pdf(wkhtmltopdf_converter * c, const char * msg) {
 }
 
 
-wkhtmltopdf_global_settings* wkpdfInit(char *pdfFileName) {
+void wkpdfInit() {
 
 	wkhtmltopdf_init(false);
-	wkhtmltopdf_global_settings * gs;
-	gs = wkhtmltopdf_create_global_settings();
-	wkhtmltopdf_set_global_setting(gs, "out", pdfFileName);
-	return gs;
 }
 
 bool wkpdfCreate(char *htmlFileName, wkhtmltopdf_global_settings* gs) {
@@ -42,6 +38,7 @@ bool wkpdfCreate(char *htmlFileName, wkhtmltopdf_global_settings* gs) {
 	}
 	
 
+	wkhtmltopdf_destroy_object_settings(os);
 	wkhtmltopdf_destroy_converter(c);
 	return true;
 }
@@ -52,7 +49,10 @@ void wkpdfDestroy() {
 }
 
 bool  GetPDFFile(Status *status) {
-	// FIXME Create the appropriate hooks for the rest of the library to use.
-	wkhtmltopdf_global_settings *gs = wkpdfInit(status->pdfFileName);
+
+	wkhtmltopdf_global_settings * gs;
+	gs = wkhtmltopdf_create_global_settings();
+	wkhtmltopdf_set_global_setting(gs, "out", status->pdfFileName);
 	wkpdfCreate(status->htmlFileName, gs);
+	wkhtmltopdf_destroy_global_settings(gs);
 }

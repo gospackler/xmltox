@@ -53,4 +53,7 @@ bool GetHTML(Status *);
  */
 char* GetPDFFromHTML(char *htmlData);
 
+void wkpdfInit();
+void wkpdfDestroy();
+
 #endif /* Header file ends */
