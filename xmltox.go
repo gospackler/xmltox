@@ -1,7 +1,10 @@
 package xmltox
 
 import (
-	"github.com/georgethomas111/marionette_client"
+	"encoding/json"
+	"errors"
+
+	"github.com/njasm/marionette_client"
 )
 
 type Converter struct {
@@ -22,7 +25,15 @@ func New(workspaceDirectory string) (*Converter, error) {
 }
 
 func (c *Converter) GetPDFFromLink(link string, numOfPages int) ([]byte, error) {
-	return nil, nil
+	pngData, err := c.GetPNGFromLink(link)
+	if err != nil {
+		return nil, errors.New("Png conversion error :" + err.Error())
+	}
+	pdf, err := getPDF(pngData, numOfPages)
+	if err != nil {
+		return nil, errors.New("Png to pdf conversion error :" + err.Error())
+	}
+	return pdf, nil
 }
 
 // Returns the base64 encoded version of png
@@ -40,7 +51,13 @@ func (c *Converter) GetPNGFromLink(link string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return []byte(resp), nil
+	var d = map[string]string{}
+	json.Unmarshal([]byte(resp.Value), &d)
+	png, err := decodeBase64(d["value"])
+	if err != nil {
+		errors.New("Decode error" + err.Error())
+	}
+	return png, nil
 }
 
 // Get the signatures right later.

@@ -15,11 +15,18 @@ import (
 
 // Use a reader for this to negage slice created.
 // Using the make is suicide with a number passed.
-func decodeBase64(base64Data []byte) (dst []byte) {
-	dst = make([]byte, 1000000)
+func decodeBase64(base64Data []byte) (dst []byte, err error) {
+	var tmpByte [100]byte
+	byteReader := bytes.NewReader(tmpByte)
+	reader := base64.NewDecoder(base64.StdEncoding, byteReader)
+
+	bufReader := bufio.NewReader(reader)
+	for _, err; bufReader.Read() {
+
+	}
 	_, err := base64.StdEncoding.Decode(dst, base64Data)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	return
