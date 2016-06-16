@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"errors"
-	"fmt"
 	"image"
 	"image/png"
 	"io"
@@ -18,12 +17,11 @@ import (
 // Using the make is suicide with a number passed.
 func decodeBase64(base64Data []byte) (dst []byte) {
 	dst = make([]byte, 1000000)
-	n, err := base64.StdEncoding.Decode(dst, base64Data)
+	_, err := base64.StdEncoding.Decode(dst, base64Data)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println("Value of n = ", n)
 	return
 }
 
@@ -47,7 +45,6 @@ func cropImage(bigImage image.Image, startX, startY int, height int) (io.Reader,
 	}
 
 	reader := bytes.NewReader(buffer.Bytes())
-	fmt.Println("Reader length = ", reader.Len())
 	return reader, nil
 }
 
@@ -71,45 +68,36 @@ func addA4PdfPage(pdf *gofpdf.Fpdf, pageName string, reader io.Reader) {
 		ReadDpi:   false,
 		ImageType: "PNG",
 	}
-	widthA4 := 11.7
-	heightA4 := 8.27
-	imageInfo := pdf.RegisterImageOptionsReader(pageName, options, reader)
-	dpi := 72.0 // as per the docs of the api
-	imageInfo.SetDpi(dpi)
-	pdf.ImageOptions(pageName, 0, 0, dpi*widthA4, dpi*heightA4, true, options, 0, "")
+	pdf.RegisterImageOptionsReader(pageName, options, reader)
+	width, height := pdf.GetPageSize()
+	pdf.ImageOptions(pageName, 0, 0, width, height, true, options, 0, "")
 }
 
 // Return the pdf data in bytes.
 // Ideally put the png into the pdf and generate it.
 func getPdf(pngData []byte) ([]byte, error) {
-	pdf := gofpdf.New("L", "pt", "A4", "")
-
+	pdf := gofpdf.New("P", "pt", "A4", "")
+	pdf.SetMargins(0, 0, 0)
 	pngReader := bytes.NewReader(pngData)
 	bigImage, err := png.Decode(pngReader)
 	if err != nil {
 		return nil, errors.New("Error PNG Decode : " + err.Error())
 	}
 
-	reader1, err := scaleBigImage(bigImage, 0, 3)
+	reader1, err := scaleBigImage(bigImage, 0, 2)
 	if err != nil {
 		return nil, err
 	}
 
-	reader2, err := scaleBigImage(bigImage, 1, 3)
+	reader2, err := scaleBigImage(bigImage, 1, 2)
 	if err != nil {
 		return nil, err
 	}
 
-	reader3, err := scaleBigImage(bigImage, 2, 3)
-	if err != nil {
-		return nil, err
-	}
 	addA4PdfPage(pdf, "page1", reader1)
 	addA4PdfPage(pdf, "page2", reader2)
-	addA4PdfPage(pdf, "page3", reader3)
 
 	pdf.OutputFileAndClose("goabc.pdf")
-	fmt.Println("Processing status", pdf.Ok())
 	return nil, nil
 }
 
