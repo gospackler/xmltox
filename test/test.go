@@ -31,9 +31,10 @@ func cropImage(bigImage image.Image, startX, startY int, height int) (io.Reader,
 	width := bigImage.Bounds().Dx()
 
 	croppedImg, err := cutter.Crop(bigImage, cutter.Config{
-		Width:  width,
-		Height: height,
-		Anchor: image.Point{startX, startY},
+		Width:   width,
+		Height:  height,
+		Anchor:  image.Point{startX, startY},
+		Options: cutter.Copy,
 	})
 	if err != nil {
 		return nil, errors.New("Crop Error : " + err.Error())
@@ -44,7 +45,9 @@ func cropImage(bigImage image.Image, startX, startY int, height int) (io.Reader,
 	if err != nil {
 		return nil, errors.New("Image Encode Error : " + err.Error())
 	}
+
 	reader := bytes.NewReader(buffer.Bytes())
+	fmt.Println("Reader length = ", reader.Len())
 	return reader, nil
 }
 
@@ -55,7 +58,7 @@ func scaleBigImage(bigImage image.Image, id int, total int) (reader io.Reader, e
 	}
 
 	height := bigImage.Bounds().Dy()
-	startY := height / total * id
+	startY := (height / total) * id
 	reader, err = cropImage(bigImage, 0, startY, height/total)
 	if err != nil {
 		return nil, errors.New(err.Error())
@@ -68,10 +71,12 @@ func addA4PdfPage(pdf *gofpdf.Fpdf, pageName string, reader io.Reader) {
 		ReadDpi:   false,
 		ImageType: "PNG",
 	}
-	widthA4 := 11.6
+	widthA4 := 11.7
+	heightA4 := 8.27
 	imageInfo := pdf.RegisterImageOptionsReader(pageName, options, reader)
-	imageInfo.SetDpi(imageInfo.Width() / widthA4)
-	pdf.ImageOptions(pageName, 0, 0, -1, -1, true, options, 0, "")
+	dpi := 72.0 // as per the docs of the api
+	imageInfo.SetDpi(dpi)
+	pdf.ImageOptions(pageName, 0, 0, dpi*widthA4, dpi*heightA4, true, options, 0, "")
 }
 
 // Return the pdf data in bytes.
@@ -85,20 +90,26 @@ func getPdf(pngData []byte) ([]byte, error) {
 		return nil, errors.New("Error PNG Decode : " + err.Error())
 	}
 
-	reader1, err := scaleBigImage(bigImage, 0, 2)
+	reader1, err := scaleBigImage(bigImage, 0, 3)
+	if err != nil {
+		return nil, err
+	}
+
+	reader2, err := scaleBigImage(bigImage, 1, 3)
+	if err != nil {
+		return nil, err
+	}
+
+	reader3, err := scaleBigImage(bigImage, 2, 3)
 	if err != nil {
 		return nil, err
 	}
 	addA4PdfPage(pdf, "page1", reader1)
-
-	reader2, err := scaleBigImage(bigImage, 1, 2)
-	if err != nil {
-		return nil, err
-	}
 	addA4PdfPage(pdf, "page2", reader2)
+	addA4PdfPage(pdf, "page3", reader3)
 
 	pdf.OutputFileAndClose("goabc.pdf")
-	fmt.Println("Check for pdf file")
+	fmt.Println("Processing status", pdf.Ok())
 	return nil, nil
 }
 
