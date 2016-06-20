@@ -83,7 +83,7 @@ func getPDF(pngData []byte, numOfPages int) ([]byte, error) {
 	}
 
 	for pageNo := 0; pageNo < numOfPages; pageNo++ {
-		pageReader, err := scaleBigImage(bigImage, 0, numOfPages)
+		pageReader, err := scaleBigImage(bigImage, pageNo, numOfPages)
 		if err != nil {
 			return nil, err
 		}
@@ -94,15 +94,3 @@ func getPDF(pngData []byte, numOfPages int) ([]byte, error) {
 	pdf.Output(buffer)
 	return buffer.Bytes(), nil
 }
-
-/*
-func main() {
-	base64Data, _ := ioutil.ReadFile("base64encode")
-	pngData, _ := decodeBase64(base64Data)
-	ioutil.WriteFile("goabc.png", pngData, 0644)
-	_, err := getPdf(pngData)
-	if err != nil {
-		panic(err)
-	}
-}
-*/
