@@ -3,24 +3,27 @@ package xmltox
 import (
 	"encoding/json"
 	"errors"
+	"io/ioutil"
+	"path/filepath"
 
 	"github.com/njasm/marionette_client"
 )
 
 type Converter struct {
-	xslFileName string
-	client      *marionette_client.Client
+	workspace string
+	client    *marionette_client.Client
 }
 
-func New(workspaceDirectory string) (*Converter, error) {
+// The workspace Directory is the directory where the xmlContent will be dumped to.
+func New(workspace string) (*Converter, error) {
 	client := marionette_client.NewClient()
 	err := client.Connect("127.0.0.1", 2828)
 	if err != nil {
 		return nil, err
 	}
 	return &Converter{
-		xslFileName: "",
-		client:      client,
+		workspace: workspace,
+		client:    client,
 	}, nil
 }
 
@@ -60,11 +63,34 @@ func (c *Converter) GetPNGFromLink(link string) ([]byte, error) {
 	return png, nil
 }
 
-// Get the signatures right later.
-func (c *Converter) GetPNG(xmlContent string) ([]byte, error) {
-	return nil, nil
+func (c *Converter) createXml(xmlContent []byte, fileName string) (string, error) {
+
+	xmlFileName := filepath.Join(c.workspace, fileName)
+	err := ioutil.WriteFile(xmlFileName, xmlContent, 0644)
+	if err != nil {
+		return "", err
+	}
+	localUrl, err := filepath.Abs(xmlFileName)
+	localUrl = "file://" + localUrl
+	if err != nil {
+		return "", err
+	}
+	return localUrl, nil
+
 }
 
-func (c *Converter) GetPDF(xmlContent string) ([]byte, error) {
-	return nil, nil
+func (c *Converter) GetPNG(xmlContent []byte, fileName string) ([]byte, error) {
+	localUrl, err := c.createXml(xmlContent, fileName)
+	if err != nil {
+		return nil, err
+	}
+	return c.GetPNGFromLink(localUrl)
+}
+
+func (c *Converter) GetPDF(xmlContent []byte, fileName string) ([]byte, error) {
+	localUrl, err := c.createXml(xmlContent, fileName)
+	if err != nil {
+		return nil, err
+	}
+	return c.GetPDFFromLink(localUrl, 2)
 }
