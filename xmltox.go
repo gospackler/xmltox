@@ -55,7 +55,7 @@ func (c *Converter) GetPNGFromLink(link string) ([]byte, error) {
 		return nil, err
 	}
 	var d = map[string]string{}
-	json.Unmarshal([]byte(resp.Value), &d)
+	json.Unmarshal([]byte(resp), &d)
 	png, err := decodeBase64(d["value"])
 	if err != nil {
 		errors.New("Decode error" + err.Error())
