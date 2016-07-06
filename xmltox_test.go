@@ -10,7 +10,7 @@ func TestGetPNGFromLink(t *testing.T) {
 	if err != nil {
 		t.Errorf("Client creation error" + err.Error())
 	}
-	png, err := converter.GetPNGFromLink("http://direct-stg.hart.com/xml_snap/e1_inpatient.xml")
+	png, err := converter.GetPNGFromLink("https://google.com")
 	if err != nil {
 		t.Errorf("Png Convertion" + err.Error())
 	}
@@ -23,7 +23,7 @@ func TestGetPDFFromLink(t *testing.T) {
 	if err != nil {
 		t.Errorf("Client creation error" + err.Error())
 	}
-	pdf, err := converter.GetPDFFromLink("http://direct-stg.hart.com/xml_snap/e1_inpatient.xml", 2)
+	pdf, err := converter.GetPDFFromLink("http://google.com", 2)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
