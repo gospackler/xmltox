@@ -35,12 +35,11 @@ $ xvfb-run firefox -marionette
 https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette
 
 ## TODO
- 
- Get the POC of the PDF with gofpdf from the PNG.
-* Complete test.go to use `gofpdf`
-	* Done 
-* Move on to the marionette implementation. 
-	* Done
-* Move over the work in test so as to generate the pdf as per the signatures.
-
-* Change atomant patch to do the initialization of the library and call appropriate functions.
+* Make xmltox use `github.com/gospacker/bulldozer` to make it possible to use process pools. 
+	* Create a type task converter of type `task interface in bulldozer`
+	* Create TaskConverter object and wrap in the taskInput struct.
+		* inputData []byte 
+		* GetConverter() - This has backing queue with `sync` locks to ensure that it could be accessed concurrently.
+			- github.com/gospackler/bulldozer/queue
+        * Response 
+		* outPutData
