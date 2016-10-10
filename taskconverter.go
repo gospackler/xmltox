@@ -6,12 +6,22 @@ import (
 	"github.com/gospackler/bulldozer/queue"
 )
 
+type GenerateType int
+
+const (
+	PNG GenerateType = iota
+	PDF
+
+	DefaultPDFPages int = 2
+)
+
 type OutputData struct {
 	Data []byte
 	Err  error
 }
 
 type InputData struct {
+	GenType GenerateType
 	Data    []byte
 	Link    string
 	OutChan chan *OutputData
@@ -66,9 +76,6 @@ func (t *TaskConverter) Run(inpData interface{}) interface{} {
 		fmt.Println("Waiting for free instances ...")
 		<-t.DoneChan
 		return t.Run(inpData)
-		//	outData.Err = errors.New(" No firefox instances available in queue")
-		//	inp.OutChan <- outData
-		//	return nil
 	}
 
 	conv := convInt.(*Converter)
@@ -76,9 +83,19 @@ func (t *TaskConverter) Run(inpData interface{}) interface{} {
 	var data []byte
 	var err error
 	if inp.Data != nil {
-		data, err = conv.GetPNG(inp.Data)
+		switch inp.GenType {
+		case PNG:
+			data, err = conv.GetPNG(inp.Data)
+		case PDF:
+			data, err = conv.GetPDF(inp.Data)
+		}
 	} else {
-		data, err = conv.GetPNGFromLink(inp.Link)
+		switch inp.GenType {
+		case PNG:
+			data, err = conv.GetPNGFromLink(inp.Link)
+		case PDF:
+			data, err = conv.GetPDFFromLink(inp.Link, DefaultPDFPages)
+		}
 	}
 
 	if err != nil {
@@ -97,7 +114,7 @@ func (t *TaskConverter) Run(inpData interface{}) interface{} {
 	return nil
 }
 
-func (t *TaskConverter) getPNG(inpData *InputData) ([]byte, error) {
+func (t *TaskConverter) getOutputFile(inpData *InputData) ([]byte, error) {
 	outChan := make(chan *OutputData)
 	defer close(outChan)
 	inpData.OutChan = outChan
@@ -112,18 +129,38 @@ func (t *TaskConverter) getPNG(inpData *InputData) ([]byte, error) {
 
 func (t *TaskConverter) GetPNG(xmlContent []byte) ([]byte, error) {
 	inpData := &InputData{
-		Data: xmlContent,
-		Link: "",
+		GenType: PNG,
+		Data:    xmlContent,
+		Link:    "",
 	}
-	return t.getPNG(inpData)
+	return t.getOutputFile(inpData)
 }
 
 func (t *TaskConverter) GetPNGFromLink(link string) ([]byte, error) {
 	inpData := &InputData{
-		Data: nil,
-		Link: link,
+		GenType: PNG,
+		Data:    nil,
+		Link:    link,
 	}
-	return t.getPNG(inpData)
+	return t.getOutputFile(inpData)
+}
+
+func (t *TaskConverter) GetPDF(xmlContent []byte) ([]byte, error) {
+	inpData := &InputData{
+		GenType: PDF,
+		Data:    xmlContent,
+		Link:    "",
+	}
+	return t.getOutputFile(inpData)
+}
+
+func (t *TaskConverter) GetPDFFromLink(link string, noOfPages int) ([]byte, error) {
+	inpData := &InputData{
+		GenType: PDF,
+		Data:    nil,
+		Link:    link,
+	}
+	return t.getOutputFile(inpData)
 }
 
 func (t *TaskConverter) Finish() {
