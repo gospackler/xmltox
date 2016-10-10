@@ -1,6 +1,7 @@
 package xmltox
 
 import (
+	"fmt"
 	"io/ioutil"
 	"testing"
 	"time"
@@ -17,21 +18,22 @@ func convert(t *testing.T, link string, fileName string) {
 }
 
 func set1(t *testing.T) {
-	convert(t, "https://google.com", "google.png")
-	convert(t, "https://youtube.com", "you.png")
-	convert(t, "https://facebook.com", "fb.png")
+	for i := 0; i < 100; i++ {
+		name := fmt.Sprintf("%d.png", i)
+		go convert(t, "https://google.com", name)
+	}
 }
 
 func TestGetPNGFromLink(t *testing.T) {
 	var err error
-	converter, err = NewTaskConverter("", "127.0.0.1", []int{2828, 2829})
+	converter, err = NewTaskConverter("", "127.0.0.1", []int{2828, 2829}, 100)
 	if err != nil {
 		t.Errorf("Client creation error" + err.Error())
 	}
 
 	set1(t)
-	time.Sleep(time.Second * 10)
-	//	converter.Finish()
+	time.Sleep(time.Second * 60)
+	converter.Finish()
 }
 
 /*

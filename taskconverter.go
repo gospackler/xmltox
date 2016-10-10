@@ -28,7 +28,7 @@ type TaskConverter struct {
 	mapRouteChan chan InputData
 }
 
-func NewTaskConverter(workspace, host string, ports []int) (*TaskConverter, error) {
+func NewTaskConverter(workspace, host string, ports []int, workerCount int) (*TaskConverter, error) {
 	q := queue.New()
 	for _, port := range ports {
 		conv, err := New(workspace, host, port)
@@ -38,7 +38,6 @@ func NewTaskConverter(workspace, host string, ports []int) (*TaskConverter, erro
 		fmt.Println("Adding", conv)
 		q.Add(conv)
 	}
-	workerCount := len(ports) + 10
 	respChan := make(chan interface{}, workerCount)
 
 	tc := &TaskConverter{
@@ -64,6 +63,7 @@ func (t *TaskConverter) Run(inpData interface{}) interface{} {
 	// FIXME Add a wait if instance not available.
 	// This should not get hit.
 	if convInt == nil {
+		fmt.Println("Waiting for free instances ...")
 		<-t.DoneChan
 		return t.Run(inpData)
 		//	outData.Err = errors.New(" No firefox instances available in queue")
@@ -89,7 +89,7 @@ func (t *TaskConverter) Run(inpData interface{}) interface{} {
 	outData.Data = data
 	t.q.Add(conv)
 	select {
-	case <-t.DoneChan:
+	case t.DoneChan <- 1:
 	default:
 	}
 	fmt.Println("Sending data on outChan")
