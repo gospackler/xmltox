@@ -51,6 +51,7 @@ func (c *Converter) GetPNGFromLink(link string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer c.client.DeleteSession()
 
 	_, err = c.client.Navigate(link)
 	if err != nil {

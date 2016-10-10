@@ -1,7 +1,6 @@
 package xmltox
 
 import (
-	"errors"
 	"fmt"
 	"github.com/gospackler/bulldozer"
 	"github.com/gospackler/bulldozer/queue"
@@ -25,6 +24,7 @@ type TaskConverter struct {
 	Input        chan interface{}
 	Fin          chan int
 	ExitChan     chan int
+	DoneChan     chan int
 	mapRouteChan chan InputData
 }
 
@@ -38,7 +38,7 @@ func NewTaskConverter(workspace, host string, ports []int) (*TaskConverter, erro
 		fmt.Println("Adding", conv)
 		q.Add(conv)
 	}
-	workerCount := len(ports)
+	workerCount := len(ports) + 10
 	respChan := make(chan interface{}, workerCount)
 
 	tc := &TaskConverter{
@@ -47,6 +47,7 @@ func NewTaskConverter(workspace, host string, ports []int) (*TaskConverter, erro
 		respChan:    respChan,
 	}
 	tc.ExitChan = make(chan int)
+	tc.DoneChan = make(chan int)
 	freeWorkerChan := bulldozer.InitializeWorkers(workerCount, respChan, tc)
 	tc.Input, tc.Fin = bulldozer.Scheduler(freeWorkerChan, tc.ExitChan, respChan, workerCount)
 	return tc, nil
@@ -55,18 +56,23 @@ func NewTaskConverter(workspace, host string, ports []int) (*TaskConverter, erro
 // This is the embarassingly parallel fuction.
 // Accepts InputData and outPuts OutputData
 func (t *TaskConverter) Run(inpData interface{}) interface{} {
-	conv := (t.q.Remove()).(*Converter)
+	convInt := t.q.Remove()
 
-	fmt.Println("Trying to run something")
-	// Type assersion as its an interface.
 	inp := inpData.(*InputData)
+	fmt.Println("Processing input", inp)
 	outData := new(OutputData)
-	if conv == nil {
-		outData.Err = errors.New(" No firefox instances available in queue")
-		inp.OutChan <- outData
-		return nil
+	// FIXME Add a wait if instance not available.
+	// This should not get hit.
+	if convInt == nil {
+		<-t.DoneChan
+		return t.Run(inpData)
+		//	outData.Err = errors.New(" No firefox instances available in queue")
+		//	inp.OutChan <- outData
+		//	return nil
 	}
 
+	conv := convInt.(*Converter)
+	fmt.Println("Converting using", conv)
 	var data []byte
 	var err error
 	if inp.Data != nil {
@@ -81,6 +87,11 @@ func (t *TaskConverter) Run(inpData interface{}) interface{} {
 		return nil
 	}
 	outData.Data = data
+	t.q.Add(conv)
+	select {
+	case <-t.DoneChan:
+	default:
+	}
 	fmt.Println("Sending data on outChan")
 	inp.OutChan <- outData
 	return nil
@@ -90,6 +101,7 @@ func (t *TaskConverter) getPNG(inpData *InputData) ([]byte, error) {
 	outChan := make(chan *OutputData)
 	defer close(outChan)
 	inpData.OutChan = outChan
+	fmt.Println("Added data", inpData)
 	t.Input <- inpData
 	output := <-outChan
 	if output.Err != nil {
