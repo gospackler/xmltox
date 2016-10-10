@@ -3,28 +3,33 @@ package xmltox
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"path/filepath"
 
 	"github.com/njasm/marionette_client"
 )
 
+// There is one converter instance that always.
 type Converter struct {
-	workspace string
-	client    *marionette_client.Client
+	workspace     string
+	client        *marionette_client.Client
+	uniqueXmlName string
 }
 
 // The workspace Directory is the directory where the xmlContent will be dumped to.
-func New(workspace string) (*Converter, error) {
+func New(workspace string, host string, port int) (*Converter, error) {
 	client := marionette_client.NewClient()
-	err := client.Connect("127.0.0.1", 2828)
+	err := client.Connect(host, port)
 	if err != nil {
 		return nil, err
 	}
 
+	uName := fmt.Sprintf("%d.xml", port)
 	return &Converter{
-		workspace: workspace,
-		client:    client,
+		workspace:     workspace,
+		client:        client,
+		uniqueXmlName: uName,
 	}, nil
 }
 
@@ -83,7 +88,7 @@ func (c *Converter) createXml(xmlContent []byte, fileName string) (string, error
 // Need to have a scheduler which interacts to make sure the names are
 // unique and can run concurrently.
 func (c *Converter) getTempFileName() string {
-	return "file.xml"
+	return c.uniqueXmlName
 }
 
 func (c *Converter) GetPNG(xmlContent []byte) ([]byte, error) {

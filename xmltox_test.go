@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetPNGFromLink(t *testing.T) {
-	converter, err := New("")
+	converter, err := NewTaskConverter("", "127.0.0.1", []int{2828, 2829})
 	if err != nil {
 		t.Errorf("Client creation error" + err.Error())
 	}
@@ -18,6 +18,7 @@ func TestGetPNGFromLink(t *testing.T) {
 	ioutil.WriteFile("test.png", png, 0644)
 }
 
+/*
 func TestGetPDFFromLink(t *testing.T) {
 	converter, err := New("")
 	if err != nil {
@@ -30,3 +31,4 @@ func TestGetPDFFromLink(t *testing.T) {
 
 	ioutil.WriteFile("test.pdf", pdf, 0644)
 }
+*/
