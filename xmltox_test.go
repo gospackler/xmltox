@@ -2,27 +2,30 @@ package xmltox
 
 import (
 	"fmt"
-	//	"io/ioutil"
+	"sync"
 	"testing"
-	"time"
 )
 
 var converter *TaskConverter
 
-func convert(t *testing.T, link string, fileName string) {
+func convert(t *testing.T, link string, fileName string, wg *sync.WaitGroup) {
 	png, err := converter.GetPDFFromLink(link, 1)
 	if err != nil {
 		t.Errorf("PDF Convertion" + err.Error())
 	}
-	t.Log(fileName, " ,", len(png))
+	t.Log(fileName, len(png))
 	//	ioutil.WriteFile(fileName, png, 0644)
+	wg.Done()
 }
 
 func set1(t *testing.T) {
-	for i := 0; i < 100; i++ {
+	var wg sync.WaitGroup
+	for i := 0; i < 10; i++ {
 		name := fmt.Sprintf("%d.pdf", i)
-		go convert(t, "https://google.com", name)
+		wg.Add(1)
+		go convert(t, "https://google.com", name, &wg)
 	}
+	wg.Wait()
 }
 
 func TestGetPNGFromLink(t *testing.T) {
@@ -33,7 +36,6 @@ func TestGetPNGFromLink(t *testing.T) {
 	}
 
 	set1(t)
-	time.Sleep(time.Second * 60 * 10)
 	converter.Finish()
 }
 
