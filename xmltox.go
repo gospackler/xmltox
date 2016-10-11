@@ -21,6 +21,7 @@ func New(workspace string) (*Converter, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &Converter{
 		workspace: workspace,
 		client:    client,
@@ -45,7 +46,8 @@ func (c *Converter) GetPNGFromLink(link string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	_, err = c.client.Get(link)
+
+	_, err = c.client.Navigate(link)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +66,6 @@ func (c *Converter) GetPNGFromLink(link string) ([]byte, error) {
 }
 
 func (c *Converter) createXml(xmlContent []byte, fileName string) (string, error) {
-
 	xmlFileName := filepath.Join(c.workspace, fileName)
 	err := ioutil.WriteFile(xmlFileName, xmlContent, 0644)
 	if err != nil {
@@ -76,10 +77,17 @@ func (c *Converter) createXml(xmlContent []byte, fileName string) (string, error
 		return "", err
 	}
 	return localUrl, nil
-
 }
 
-func (c *Converter) GetPNG(xmlContent []byte, fileName string) ([]byte, error) {
+// This is the function that handles the temporary file names that come up.
+// Need to have a scheduler which interacts to make sure the names are
+// unique and can run concurrently.
+func (c *Converter) getTempFileName() string {
+	return "file.xml"
+}
+
+func (c *Converter) GetPNG(xmlContent []byte) ([]byte, error) {
+	fileName := c.getTempFileName()
 	localUrl, err := c.createXml(xmlContent, fileName)
 	if err != nil {
 		return nil, err
@@ -87,7 +95,8 @@ func (c *Converter) GetPNG(xmlContent []byte, fileName string) ([]byte, error) {
 	return c.GetPNGFromLink(localUrl)
 }
 
-func (c *Converter) GetPDF(xmlContent []byte, fileName string) ([]byte, error) {
+func (c *Converter) GetPDF(xmlContent []byte) ([]byte, error) {
+	fileName := c.getTempFileName()
 	localUrl, err := c.createXml(xmlContent, fileName)
 	if err != nil {
 		return nil, err
